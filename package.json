@@ -24,6 +24,7 @@
 		"@types/node": "^20.10.2",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.0.0",
+		"solform": "^1.0.7",
 		"solid-icons": "^1.1.0",
 		"solid-js": "^1.7.6",
 		"tailwind-merge": "^2.1.0",

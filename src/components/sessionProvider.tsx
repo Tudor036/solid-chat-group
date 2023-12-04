@@ -1,9 +1,15 @@
 import { useMatch, useNavigate } from "@solidjs/router";
 import { Session } from "@supabase/supabase-js";
-import { ParentComponent, createContext, onMount } from "solid-js";
+import {
+	ParentComponent,
+	createContext,
+	createEffect,
+	onMount,
+} from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { AppError } from "~/lib/error";
 import { supabase } from "~/lib/supabase/client";
+import { showToast } from "./ui/toast";
 
 type SessionContextType =
 	| {
@@ -50,20 +56,28 @@ const SessionProvider: ParentComponent = (props) => {
 
 	onMount(() => {
 		supabase.auth.onAuthStateChange(async (event, session) => {
-			if (event === "INITIAL_SESSION") {
+			console.log(event, session);
+			if (event === "INITIAL_SESSION" && !session) {
 				setSession(session);
-
-				if (!session) {
-					navigate("/auth");
-				} else {
-					if (matchesAuth()) {
-						navigate("/profile");
-					}
-				}
+				navigate("/auth");
 			} else if (event === "SIGNED_IN") {
+				if (!context.session) {
+					showToast({
+						title: "Success",
+						description: "Successfully signed in!",
+					});
+				}
+
 				setSession(session);
 				navigate("/profile");
 			} else if (event === "SIGNED_OUT") {
+				if (context.session) {
+					showToast({
+						title: "Success",
+						description: "Successfully signed out!",
+					});
+				}
+
 				setSession(session);
 				navigate("/auth");
 			}
