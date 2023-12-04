@@ -13,6 +13,14 @@ export const routes: RouteDefinition[] = [
 		component: lazy(() => import("./pages/auth")),
 	},
 	{
+		path: "/onboarding",
+		component: lazy(() => import("./pages/onboarding")),
+	},
+	{
+		path: "/profile",
+		component: lazy(() => import("./pages/profile/index")),
+	},
+	{
 		path: "/chat",
 		component: lazy(() => import("./pages/chat/layout")),
 		children: [
@@ -25,10 +33,6 @@ export const routes: RouteDefinition[] = [
 				component: lazy(() => import("./pages/chat/[id]/index")),
 			},
 		],
-	},
-	{
-		path: "/profile",
-		component: lazy(() => import("./pages/profile/index")),
 	},
 	{
 		path: "**",

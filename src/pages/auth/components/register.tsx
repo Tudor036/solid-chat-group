@@ -62,6 +62,7 @@ export default function RegisterForm() {
 				options: {
 					data: {
 						username: values.username,
+						onboarded: false,
 					},
 				},
 			});

@@ -3,7 +3,13 @@ import { SessionContext } from "~/components/sessionProvider";
 
 const useSession = () => {
 	const context = useContext(SessionContext);
-	return [context];
+	return [
+		{
+			session: () => context.session,
+			loading: () => context.loading,
+			error: () => context.error,
+		},
+	];
 };
 
 export default useSession;

@@ -44,41 +44,27 @@ const SessionProvider: ParentComponent = (props) => {
 	const setSession = (session: Session) => {
 		setContext(
 			produce((state) => {
+				state.loading = false;
 				state.session = session;
 			})
 		);
 	};
 
-	const matchesAuth = () => {
-		const authMatcher = useMatch(() => "/auth");
-		return authMatcher();
-	};
+	const matchesAuth = useMatch(() => "/auth");
 
 	onMount(() => {
 		supabase.auth.onAuthStateChange(async (event, session) => {
 			console.log(event, session);
+			setSession(session);
 			if (event === "INITIAL_SESSION" && !session) {
-				setSession(session);
-				navigate("/auth");
-			} else if (event === "SIGNED_IN") {
-				if (!context.session) {
-					showToast({
-						title: "Success",
-						description: "Successfully signed in!",
-					});
+				if (!matchesAuth()) {
+					navigate("/auth");
 				}
-
-				setSession(session);
-				navigate("/profile");
-			} else if (event === "SIGNED_OUT") {
-				if (context.session) {
-					showToast({
-						title: "Success",
-						description: "Successfully signed out!",
-					});
+			} else if (event === "SIGNED_IN" && !session) {
+				if (matchesAuth()) {
+					navigate("/profile");
 				}
-
-				setSession(session);
+			} else if (event === "SIGNED_OUT" && session) {
 				navigate("/auth");
 			}
 		});
