@@ -14,7 +14,8 @@ export default function Error() {
 		<Show when={location.state} fallback={<NotFound />}>
 			<section class="text-gray-700 p-8">
 				<h1 class="text-2xl font-bold">
-					{location.state?.error?.status}:{" "}
+					{location.state?.error?.status &&
+						`${location.state.error.status}:`}{" "}
 					{location.state?.error?.message}
 				</h1>
 			</section>
