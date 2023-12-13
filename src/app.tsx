@@ -1,27 +1,37 @@
-import { createEffect, type Component } from "solid-js";
-import { Router, useLocation, useRoutes } from "@solidjs/router";
+import { type Component, createRenderEffect } from "solid-js";
+import { useMatch, useNavigate, useRoutes } from "@solidjs/router";
 
 import { routes } from "./routes";
 import SessionProvider from "./components/sessionProvider";
 import { Toaster } from "./components/ui/toast";
+import useConnection from "./store/useConnection";
+import ThemeProvider from "./components/themeProvider";
 
 const App: Component = () => {
 	const Route = useRoutes(routes);
-	const location = useLocation();
+	const matchConnectionError = useMatch(() => "/service-unavailable/error");
+	const navigate = useNavigate();
+	const connection = useConnection();
 
-	createEffect(() => {
-		console.log(location.pathname);
+	createRenderEffect(() => {
+		if (!connection.online && !matchConnectionError()) {
+			navigate("/service-unavailable/error", {
+				state: { error: new Error("Service unavailable 😞") },
+			});
+		} else if (connection.online && matchConnectionError()) {
+			navigate("/");
+		}
 	});
 
 	return (
-		<>
-			<main class="w-screen min-h-screen grid place-items-center">
-				<SessionProvider>
+		<ThemeProvider>
+			<SessionProvider>
+				<main class="w-screen min-h-screen grid place-items-center">
 					<Route />
-				</SessionProvider>
-			</main>
-			<Toaster />
-		</>
+					<Toaster />
+				</main>
+			</SessionProvider>
+		</ThemeProvider>
 	);
 };
 

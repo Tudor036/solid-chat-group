@@ -2,6 +2,7 @@ import { lazy } from "solid-js";
 import type { RouteDefinition } from "@solidjs/router";
 
 import Home from "./pages";
+import Error from "./pages/error";
 
 export const routes: RouteDefinition[] = [
 	{
@@ -36,6 +37,6 @@ export const routes: RouteDefinition[] = [
 	},
 	{
 		path: "**",
-		component: lazy(() => import("./pages/error")),
+		component: Error,
 	},
 ];
