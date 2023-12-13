@@ -1,9 +1,22 @@
+import { useNavigate } from "@solidjs/router";
 import Protected from "~/components/protected";
 import { Button } from "~/components/ui/button";
+import { showToast } from "~/components/ui/toast";
 import { supabase } from "~/lib/supabase/client";
 
 export default function Profile() {
-	const handleLogOut = async () => await supabase.auth.signOut();
+	const navigate = useNavigate();
+	const handleLogOut = async () => {
+		try {
+			await supabase.auth.signOut();
+			navigate("/auth");
+		} catch (err: any) {
+			showToast({
+				title: "Error",
+				description: err.message,
+			});
+		}
+	};
 
 	return (
 		<Protected>

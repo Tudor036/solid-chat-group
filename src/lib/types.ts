@@ -21,3 +21,8 @@ export type AuthContextError = {
 	loading: boolean;
 	error: AppError;
 };
+
+export type AuthContextType =
+	| AuthContextInit
+	| AuthContextError
+	| AuthContextLoggedIn;

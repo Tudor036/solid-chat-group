@@ -2,13 +2,13 @@ import { type Component, createRenderEffect } from "solid-js";
 import { useMatch, useNavigate, useRoutes } from "@solidjs/router";
 
 import { routes } from "./routes";
-import SessionProvider from "./components/sessionProvider";
 import { Toaster } from "./components/ui/toast";
+import SessionProvider from "./components/sessionProvider";
 import useConnection from "./store/useConnection";
 import ThemeProvider from "./components/themeProvider";
 
 const App: Component = () => {
-	const Route = useRoutes(routes);
+	const Routes = useRoutes(routes);
 	const matchConnectionError = useMatch(() => "/service-unavailable/error");
 	const navigate = useNavigate();
 	const connection = useConnection();
@@ -27,7 +27,7 @@ const App: Component = () => {
 		<ThemeProvider>
 			<SessionProvider>
 				<main class="w-screen min-h-screen grid place-items-center">
-					<Route />
+					<Routes />
 					<Toaster />
 				</main>
 			</SessionProvider>
